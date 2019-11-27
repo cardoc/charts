@@ -164,9 +164,9 @@ spec:
           {{- end }}
 {{ toYaml .Values.readinessProbe | indent 10 }}
         volumeMounts:
-        - mountPath: /bitnami/wordpress
-          name: wordpress-data
-          subPath: wordpress
+        # - mountPath: /bitnami/wordpress
+        #   name: wordpress-data
+        #   subPath: wordpress
         {{- if and .Values.allowOverrideNone .Values.customHTAccessCM }}
         - mountPath: /htaccess
           name: custom-htaccess
@@ -211,13 +211,6 @@ spec:
             - key: wordpress-htaccess.conf
               path: wordpress-htaccess.conf
       {{- end }}
-      - name: wordpress-data
-      {{- if .Values.persistence.enabled }}
-        persistentVolumeClaim:
-          claimName: {{ .Values.persistence.existingClaim | default (include "wordpress.fullname" .) }}
-      {{- else }}
-        emptyDir: {}
-      {{ end }}
       {{- with .Values.extraVolumes }}
 {{ toYaml . | indent 6 }}
       {{- end }}
